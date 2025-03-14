@@ -102,7 +102,7 @@ func (s *Service) ExchangeToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if sa == nil {
-		sa, err = s.snyk.CreateServiceAccount(r.Context(), orgID, saName, "api_key", s.roleID)
+		sa, err = s.snyk.CreateServiceAccount(r.Context(), orgID, saName, "oauth_client_secret", s.roleID)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("failed to create service account: %v", err), http.StatusInternalServerError)
 			return
@@ -110,14 +110,14 @@ func (s *Service) ExchangeToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate access token
-	token, err := s.snyk.CreateToken(r.Context(), orgID, sa.ID)
+	tokenResp, err := s.snyk.CreateToken(r.Context(), sa.Attributes.ClientID, sa.Attributes.ClientSecret)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("failed to create token: %v", err), http.StatusInternalServerError)
 		return
 	}
 
 	resp := TokenResponse{
-		Token: token,
+		Token: tokenResp.AccessToken,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
