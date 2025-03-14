@@ -10,8 +10,8 @@ import (
 	"sync"
 	"testing"
 
-	"z4ce.com/snyk-oidc-exchange/pkg/oidc"
-	"z4ce.com/snyk-oidc-exchange/pkg/snyk"
+	"github.com/z4ce/snyk-oidc-exchange/pkg/oidc"
+	"github.com/z4ce/snyk-oidc-exchange/pkg/snyk"
 )
 
 // MockSnykClient is a mock implementation of the Snyk client for testing

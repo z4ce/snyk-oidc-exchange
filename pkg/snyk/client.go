@@ -198,12 +198,6 @@ func (c *Client) CreateToken(ctx context.Context, clientID, clientSecret string)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-	// Log request details (excluding sensitive data)
-	fmt.Printf("Making token request to: %s\n", authURL)
-	fmt.Printf("Request body: %s\n", data.Encode())
-	fmt.Printf("Request headers: Content-Type=%s\n", req.Header.Get("Content-Type"))
-	fmt.Printf("Request body length: %d bytes\n", len(data.Encode()))
-
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to send request: %w", err)

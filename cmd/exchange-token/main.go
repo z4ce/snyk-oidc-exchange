@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"z4ce.com/snyk-oidc-exchange/pkg/exchange"
+	"github.com/z4ce/snyk-oidc-exchange/pkg/exchange"
 )
 
 func main() {

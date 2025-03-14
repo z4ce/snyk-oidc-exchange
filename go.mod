@@ -1,4 +1,4 @@
-module z4ce.com/snyk-oidc-exchange
+module github.com/z4ce/snyk-oidc-exchange
 
 go 1.23
 
