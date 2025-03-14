@@ -242,3 +242,32 @@ func (c *Client) GetServiceAccount(ctx context.Context, orgID string, name strin
 
 	return nil, nil
 }
+
+// DeleteServiceAccount deletes a service account by ID
+func (c *Client) DeleteServiceAccount(ctx context.Context, orgID string, serviceAccountID string) error {
+	url := fmt.Sprintf("%s/orgs/%s/service_accounts/%s", baseURL, orgID, serviceAccountID)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create delete request: %w", err)
+	}
+
+	// Add query parameters
+	q := req.URL.Query()
+	q.Add("version", version)
+	req.URL.RawQuery = q.Encode()
+
+	req.Header.Set("Authorization", "token "+c.token)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to send delete request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("service account deletion failed with status %d", resp.StatusCode)
+	}
+
+	return nil
+}

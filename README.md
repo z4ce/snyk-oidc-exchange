@@ -25,7 +25,7 @@ This service enables secure token exchange between GitHub Actions OIDC tokens an
 ## Installation
 
 ```bash
-go get z4ce.com/snyk-oidc-exchange
+go get github.com/z4ce/snyk-oidc-exchange
 ```
 
 ## Usage
