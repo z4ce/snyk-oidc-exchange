@@ -37,6 +37,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Enable Docker experimental features for manifest support
+      - name: Enable Docker experimental features
+        run: |
+          echo '{"experimental": true}' | sudo tee /etc/docker/daemon.json
+          sudo systemctl restart docker
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
