@@ -36,7 +36,7 @@ jobs:
         run: go test -v ./...
 
       - name: Verify goreleaser config
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
           version: latest
