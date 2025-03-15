@@ -88,10 +88,6 @@ Exchanges a GitHub Actions OIDC token for a temporary Snyk token.
 - Generates short-lived tokens (10 minutes)
 - Requires secure environment variables
 
-## License
-
-MIT 
-
 ## Releasing
 
 This project uses [GoReleaser](https://goreleaser.com/) for automated releases through GitHub Actions.
