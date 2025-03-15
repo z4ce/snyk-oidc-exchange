@@ -32,3 +32,6 @@ snyk-oidc-exchange
 
 # Log files
 *.log 
+
+# GoReleaser
+dist/ 

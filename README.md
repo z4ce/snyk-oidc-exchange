@@ -91,3 +91,38 @@ Exchanges a GitHub Actions OIDC token for a temporary Snyk token.
 ## License
 
 MIT 
+
+## Releasing
+
+This project uses [GoReleaser](https://goreleaser.com/) for automated releases through GitHub Actions.
+
+### Release Process
+
+1. Create and push a new tag:
+   ```bash
+   git tag -a v0.1.0 -m "First release"
+   git push origin v0.1.0
+   ```
+
+2. The GitHub Action will automatically:
+   - Build binaries for multiple platforms (Linux, macOS, Windows)
+   - Create GitHub release with release notes and binaries
+   - Build and push Docker images to GitHub Container Registry (GHCR)
+
+### Docker Images
+
+Docker images are available from GitHub Container Registry:
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/OWNER/snyk-oidc-exchange:latest
+
+# Run the container
+docker run -p 8080:8080 \
+  -e SNYK_TOKEN=your-token \
+  -e SNYK_ORG_ID=your-org-id \
+  -e ALLOWED_OWNER=your-github-org \
+  ghcr.io/OWNER/snyk-oidc-exchange:latest
+```
+
+Where `OWNER` is your GitHub username or organization.

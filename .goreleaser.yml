@@ -1,0 +1,71 @@
+project_name: snyk-oidc-exchange
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: snyk-oidc-exchange
+    main: ./cmd/exchange-token/main.go
+    binary: snyk-oidc-exchange
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+    flags:
+      - -trimpath
+    # Build tags for the scratch container
+    tags:
+      - netgo
+      - osusergo
+      - static_build
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    replacements:
+      darwin: macOS
+      linux: Linux
+      windows: Windows
+      amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - Merge pull request
+      - Merge branch
+
+dockers:
+  - image_templates:
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/{{ .ProjectName }}:{{ .Version }}"
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/{{ .ProjectName }}:latest"
+    dockerfile: Dockerfile.goreleaser
+    use: buildx
+    build_flag_templates:
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description=Snyk OIDC token exchange service"
+      - "--label=org.opencontainers.image.url=https://github.com/{{ .Env.GITHUB_REPOSITORY }}"
+      - "--label=org.opencontainers.image.source=https://github.com/{{ .Env.GITHUB_REPOSITORY }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.licenses=MIT"
+      - "--platform=linux/amd64,linux/arm64" 

@@ -1,0 +1,21 @@
+FROM scratch
+
+# Copy CA certificates for HTTPS connections
+COPY --from=alpine:latest /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+# Copy the pre-built binary from the build stage
+COPY snyk-oidc-exchange /
+
+# No need for user/group creation with scratch
+# The application runs as root, but there's no shell or other tools available
+
+# Set the entrypoint
+ENTRYPOINT ["/snyk-oidc-exchange"]
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Set metadata
+LABEL org.opencontainers.image.title="Snyk OIDC Token Exchange" \
+      org.opencontainers.image.description="Service for exchanging GitHub OIDC tokens for temporary Snyk tokens" \
+      org.opencontainers.image.licenses="MIT" 
