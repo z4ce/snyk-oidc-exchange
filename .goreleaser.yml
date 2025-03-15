@@ -1,3 +1,6 @@
+# GoReleaser configuration version
+version: 1
+
 project_name: snyk-oidc-exchange
 
 before:
@@ -27,8 +30,9 @@ builds:
       - osusergo
       - static_build
 
+# Updated archives section to use the new format
 archives:
-  - format: tar.gz
+  - id: default
     name_template: >-
       {{- .ProjectName }}_
       {{- title .Os }}_
@@ -36,6 +40,12 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
+    # Using format_overrides instead of format
+    format_overrides:
+      - goos: windows
+        format: zip
+    # Default format is now specified here
+    format: tar.gz
 
 checksum:
   name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
