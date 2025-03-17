@@ -35,3 +35,4 @@ snyk-oidc-exchange
 
 # GoReleaser
 dist/ 
+dev-values.yaml
