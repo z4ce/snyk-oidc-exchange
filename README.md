@@ -122,3 +122,29 @@ docker run -p 8080:8080 \
 ```
 
 Where `OWNER` is your GitHub username or organization.
+
+# Example GitHub Action Using Service
+
+```yaml
+name: Run Snyk Test
+
+on:
+  workflow_dispatch: # Allows manual trigger of the workflow
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+jobs:
+  print-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request Snyk Token
+        run: |
+               TOKEN=$(curl -X POST https://snyk-oidc-exchange.company.com/exchange \
+               -H "Content-Type: application/json" \
+               -d '{"token": "'$ACTIONS_ID_TOKEN_REQUEST_TOKEN'"}' | jq -r .token)
+               echo "SNYK_OAUTH_TOKEN=$TOKEN" >> $GITHUB_ENV
+      - uses: snyk/actions/setup@master
+      - uses: actions/checkout@v3
+      - name: Run snyk test
+        run: snyk test
+```
