@@ -43,8 +43,9 @@ jobs:
 
 ## Environment Variables
 
-- `SNYK_TOKEN`: Your Snyk API token with admin privileges
-- `SNYK_ORG_ID`: The ID of your Snyk organization
+- `SNYK_TOKEN`: Snyk API token with sufficient privileges to make new service accounts
+- `SNYK_ORG_ID`: The ID of your Snyk organization that a new restricted service account will be created in
+- `SNYK_ROLE_ID`: The role of the restricted user account
 - `ALLOWED_OWNER`: The GitHub organization/owner that is allowed to exchange tokens
 - `PORT`: (Optional) The port to run the server on (default: 8080)
 
