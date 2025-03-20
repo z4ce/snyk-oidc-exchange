@@ -59,8 +59,10 @@ Download the latest release from the GitHub releases page for your architecture.
 
 ```bash
 export SNYK_TOKEN=your-snyk-token
-export SNYK_ORG_ID=your-org-id
+export SNYK_ORG_ID=your-org-id # this the org your GH Action will be part of
+export SNYK_ROLE_ID=your-role-id # this is the role the GH Action will receive
 export ALLOWED_OWNER=your-github-org
+
 go run cmd/exchange-token/main.go
 ```
 
