@@ -7,7 +7,7 @@ This service enables secure token exchange between GitHub Actions OIDC tokens an
 - Verifies GitHub Actions OIDC tokens
 - Creates Snyk service accounts if they don't exist
 - Generates temporary Snyk tokens with 10-minute TTL
-- Secure token exchange with proper validation
+- Secure token exchange with proper validationgit co
 
 # Example GitHub Action Using Service
 
@@ -51,9 +51,7 @@ jobs:
 
 ## Installation
 
-```bash
-go get github.com/z4ce/snyk-oidc-exchange
-```
+Download the latest release from the GitHub releases page for your architecture.
 
 ## Usage
 
