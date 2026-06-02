@@ -1,8 +1,6 @@
 module github.com/z4ce/snyk-oidc-exchange
 
-go 1.23.0
-
-toolchain go1.23.2
+go 1.26.3
 
 require github.com/lestrrat-go/jwx/v2 v2.1.4
 

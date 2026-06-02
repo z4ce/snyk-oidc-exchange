@@ -118,8 +118,7 @@ func (s *Service) ExchangeToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Use a generic service account name with the org name
-	saName := fmt.Sprintf("github-oidcexchange-%s", claims.RepositoryOwner)
+	saName := serviceAccountName(claims)
 
 	// Try to get credentials from cache first
 	creds, found := s.getCredentialsFromCache(saName)
@@ -199,4 +198,8 @@ func (s *Service) removeCredentialsFromCache(saName string) {
 	defer s.cacheMutex.Unlock()
 
 	delete(s.credCache, saName)
+}
+
+func serviceAccountName(claims *oidc.Claims) string {
+	return fmt.Sprintf("oidc-exch-%s", claims.Repository)
 }

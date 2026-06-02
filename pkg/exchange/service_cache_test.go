@@ -34,7 +34,7 @@ func NewMockSnykClient() *MockSnykClient {
 			ID:   "test-service-account-id",
 			Type: "service_account",
 			Attributes: snyk.ServiceAccountAttr{
-				Name:         "github-oidcexchange-testorg",
+				Name:         "oidc-exch-testorg/testrepo",
 				AuthType:     "oauth_client_secret",
 				RoleID:       "test-role-id",
 				ClientID:     "test-client-id",
@@ -59,7 +59,7 @@ func (m *MockSnykClient) GetServiceAccount(ctx context.Context, orgID string, na
 		return nil, &mockError{"Failed to get service account"}
 	}
 
-	if name == "github-oidcexchange-testorg" {
+	if name == "oidc-exch-testorg/testrepo" {
 		return m.mockServiceAccount, nil
 	}
 
@@ -117,6 +117,19 @@ func (v *mockVerifier) VerifyToken(ctx context.Context, tokenString string) (*oi
 	}, nil
 }
 
+func TestServiceAccountName(t *testing.T) {
+	claims := &oidc.Claims{
+		Repository:      "testorg/testrepo",
+		RepositoryOwner: "testorg",
+	}
+
+	got := serviceAccountName(claims)
+	want := "oidc-exch-testorg/testrepo"
+	if got != want {
+		t.Errorf("expected service account name %q, got %q", want, got)
+	}
+}
+
 func TestServiceCacheHitAndMiss(t *testing.T) {
 	tests := []struct {
 		name                         string
@@ -165,7 +178,7 @@ func TestServiceCacheHitAndMiss(t *testing.T) {
 				}
 
 				// Pre-populate the cache
-				service.cacheCredentials("github-oidcexchange-testorg", ServiceAccountCredentials{
+				service.cacheCredentials("oidc-exch-testorg/testrepo", ServiceAccountCredentials{
 					ID:           "test-service-account-id",
 					ClientID:     "test-client-id",
 					ClientSecret: "test-client-secret",
@@ -265,7 +278,7 @@ func TestServiceCacheHitAndMiss(t *testing.T) {
 				}
 
 				// After token creation failure, the credentials should be removed from cache
-				creds, exists := service.getCredentialsFromCache("github-oidcexchange-testorg")
+				creds, exists := service.getCredentialsFromCache("oidc-exch-testorg/testrepo")
 				if exists {
 					t.Errorf("expected credentials to be removed from cache after token failure, but still exists: %+v", creds)
 				}

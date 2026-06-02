@@ -144,6 +144,7 @@ docker pull ghcr.io/OWNER/snyk-oidc-exchange:latest
 docker run -p 8080:8080 \
   -e SNYK_TOKEN=your-token \
   -e SNYK_ORG_ID=your-org-id \
+  -e SNYK_ROLE_ID=your-role-id \
   -e ALLOWED_OWNER=your-github-org \
   ghcr.io/OWNER/snyk-oidc-exchange:latest
 ```
