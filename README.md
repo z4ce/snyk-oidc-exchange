@@ -20,7 +20,7 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
 jobs:
-  print-token:
+  snyk-test:
     runs-on: ubuntu-latest
     steps:
       - name: Request Snyk Token
